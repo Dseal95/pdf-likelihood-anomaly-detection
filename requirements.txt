@@ -1,0 +1,19 @@
+# numpy==1.18.1
+numpy==1.19.5
+scipy==1.6.1
+matplotlib==3.2.2
+scikit-learn==0.24.1
+pandas==1.0.1
+statsmodels==0.12.2
+pytz==2019.1
+cython==0.29.16
+xlrd==1.1.0
+openpyxl==3.0.3
+tables==3.6.1
+pydantic
+pyarrow
+requests==2.24.0
+fastkde>=1.0.19
+plotly
+dash
+dash_bootstrap_components
