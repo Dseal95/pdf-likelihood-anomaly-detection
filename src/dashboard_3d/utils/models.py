@@ -60,6 +60,7 @@ class HealthModelGeneric:
         alpha (float):
             Default probability threshold (1-confidence level)
     """
+
     # TODO: add non-deterministic and sample quantile integration options
     # TODO: add a predict method for returning status for a new point, given alpha
     # TODO: add method for computing marginals
@@ -89,7 +90,6 @@ class HealthModelGeneric:
 
         # self.deltaP = None
 
-
     @property
     def name(self):
         """Return name of Health Unit."""
@@ -101,7 +101,7 @@ class HealthModelGeneric:
         if self.trained:
             return np.sum(self.pdf * np.prod(self.deltaX))
         else:
-            self.logger.warning('PDF area cannot be calculated (model not trained)')
+            self.logger.warning("PDF area cannot be calculated (model not trained)")
             return None
 
     def _reset(self):
@@ -173,14 +173,15 @@ class HealthModelGeneric:
         # TODO: ensure output format is consistent for single and list inputs
         """
         if not self.trained:
-            raise RuntimeError('Model has not been trained')
+            raise RuntimeError("Model has not been trained")
 
         # if observations are provided, first evaluate their likelihoods
-        self.logger.info('Calculating health score(s)...')
+        self.logger.info("Calculating health score(s)...")
         if x is not None:
             if ll is not None:
                 self.logger.warning(
-                    'Overwriting likelihood input using point predictions')
+                    "Overwriting likelihood input using point predictions"
+                )
             ll, _ = self.evaluate(x)
 
         # for each likelihood, perform piecewise linear interpolation
@@ -198,26 +199,28 @@ class HealthModelGeneric:
         if self.trained:
 
             model_name = str().join(self.taglist)
-            model_name = model_name.replace("\\", "_").replace("/", "_").replace(":", "_")
-            model_path = Path(model_dir) / (model_name + '.pkl')
+            model_name = (
+                model_name.replace("\\", "_").replace("/", "_").replace(":", "_")
+            )
+            model_path = Path(model_dir) / (model_name + ".pkl")
 
             # create the directory
             if not os.path.exists(model_dir):
                 os.makedirs(model_dir)
 
             # serialise
-            with open(model_path, 'wb') as mfile:
+            with open(model_path, "wb") as mfile:
                 pickle.dump(self, mfile)
 
-            self.logger.info(f'Model has been serialised @ {model_path}')
+            self.logger.info(f"Model has been serialised @ {model_path}")
 
         else:
-            self.logger.error('Model is not trained, export cancelled.')
+            self.logger.error("Model is not trained, export cancelled.")
 
     @classmethod
     def load(cls, model_path):
         """Load the Health Unit from model path."""
-        with open(model_path, 'rb') as pickle_file:
+        with open(model_path, "rb") as pickle_file:
             content = pickle.load(pickle_file)
 
         return content
@@ -310,15 +313,19 @@ class HealthModelGeneric:
         test_result = np.isclose(1, area[1], atol=1e-2)
 
         if test_result:
-            self.logger.info(f'\tIntegrated area under the pdf (Simpson, rectangles) = ('
-                             f'{area[0]},{area[1]})')
+            self.logger.info(
+                f"\tIntegrated area under the pdf (Simpson, rectangles) = ("
+                f"{area[0]},{area[1]})"
+            )
         else:
-            self.logger.warning(f'\tIntegrated area under the pdf (Simpson, rectangles)'
-                                f' = ({area[0]},{area[1]})')
+            self.logger.warning(
+                f"\tIntegrated area under the pdf (Simpson, rectangles)"
+                f" = ({area[0]},{area[1]})"
+            )
 
         # only assert area requirement if area_validation is set to True
         if self.area_validation:
-            assert test_result, 'KDE area =! 1.0'
+            assert test_result, "KDE area =! 1.0"
 
         return test_result
 
@@ -347,11 +354,13 @@ class HealthModelGeneric:
         # if a list or array, convert to a DataFrame
         elif isinstance(xpoints, (list, np.ndarray)):
             df_x = pd.DataFrame(xpoints, columns=self.taglist)
-            self.logger.info(f'\tEvaluation points converted to dataframe '
-                             f'assuming array column order is {self.taglist}')
+            self.logger.info(
+                f"\tEvaluation points converted to dataframe "
+                f"assuming array column order is {self.taglist}"
+            )
         else:
-            msg = 'Incorrect data input type. Expected DataFrame or array-like'
-            raise(TypeError, msg)
+            msg = "Incorrect data input type. Expected DataFrame or array-like"
+            raise (TypeError, msg)
 
         # convert to an array
         x_predict = np.array(df_x.values, copy=True, dtype=np.float).T
@@ -359,17 +368,21 @@ class HealthModelGeneric:
         # check the rank of the input data points
         # if the data are an array, promote the data to a rank-1 array with only 1 column
         dataRank = len(np.shape(x_predict))
-        if (dataRank == 1):
+        if dataRank == 1:
             x_predict = np.array(x_predict[np.newaxis, :], dtype=np.float)
-        if (dataRank > 2):
-            raise ValueError("cannot broadcast x_predict to a rank-2 array "
-                             "of shape [numDataPoints,numVariables]")
+        if dataRank > 2:
+            raise ValueError(
+                "cannot broadcast x_predict to a rank-2 array "
+                "of shape [numDataPoints,numVariables]"
+            )
 
         # check that shape is correct
         if x_predict.T.shape[1] != len(self.taglist):
-            msg = f"Input data format is incorrect. Expected: " \
-                f"[numDataPoints, numVariables={len(self.taglist)}], " \
+            msg = (
+                f"Input data format is incorrect. Expected: "
+                f"[numDataPoints, numVariables={len(self.taglist)}], "
                 f"Actual: {x_predict.T.shape}"
+            )
             raise ValueError(msg)
 
         return x_predict
@@ -394,17 +407,19 @@ class HealthModelBP11(HealthModelGeneric):
         deltaP (float):
             Vertical correction of the modelled density function
     """
+
     # TODO: add non-deterministic and sample quantile integration options
     # TODO: add a predict method for returning class for a new point, given alpha
     # TODO: add method for computing marginals
 
-    defaultconfig = {'doApproximateECF': True,
-                     'ecfPrecision': 1,
-                     'numPointsPerSigma': 50,
-                     'numPoints': 1025,
-                     'doSaveMarginals': False,
-                     'positiveShift': True
-                     }
+    defaultconfig = {
+        "doApproximateECF": True,
+        "ecfPrecision": 1,
+        "numPointsPerSigma": 50,
+        "numPoints": 1025,
+        "doSaveMarginals": False,
+        "positiveShift": True,
+    }
 
     def __init__(self, **model_kwargs):
         """Initialisation."""
@@ -417,9 +432,10 @@ class HealthModelBP11(HealthModelGeneric):
             self.kdekwargs[key] = val
 
         # initialise instance attributes
-        self.numPoints = copy.deepcopy(self.kdekwargs['numPoints'])
+        self.numPoints = copy.deepcopy(self.kdekwargs["numPoints"])
         self.area_validation = copy.deepcopy(
-            self.kdekwargs.setdefault('area_validation', self.area_validation))
+            self.kdekwargs.setdefault("area_validation", self.area_validation)
+        )
 
         # do not initialise parent instance attributes
         self.deltaP = 0.0
@@ -430,7 +446,7 @@ class HealthModelBP11(HealthModelGeneric):
         self.model_kwargs = model_kwargs
 
         # strip the kwargs needed only for statsmodels kde API
-        self.kdekwargs.pop('area_validation')
+        self.kdekwargs.pop("area_validation")
 
     def fit(self, df, taglist, tag_descriptions, cxt_kwargs=None):
         """Fit an nD KDE model and return result on a uniform grid.
@@ -455,8 +471,9 @@ class HealthModelBP11(HealthModelGeneric):
 
         # perform fastkde estimation on a fixed grid (also establishes correction shift)
         self.logger.info(
-            f'Training KDE model: estimating pdf p(X) via fastKDE algorithm; '
-            f'X = {self.taglist}...')
+            f"Training KDE model: estimating pdf p(X) via fastKDE algorithm; "
+            f"X = {self.taglist}..."
+        )
         # this call overrides two common attributes from the generic class (axes, deltaX)
         self.pdfobj = fastKDE.fastKDE(data=self.data.values.T, **self.kdekwargs)
         # super().__init__(data=self.data.values.T, axes=None, **self.kdekwargs)
@@ -486,16 +503,18 @@ class HealthModelBP11(HealthModelGeneric):
 
         # if the model has not been trained
         if not self.trained:
-            raise RuntimeError('Model has not yet been trained. Provide input data.')
+            raise RuntimeError("Model has not yet been trained. Provide input data.")
 
         # clean up the input points
         x_predict = self._parsepoints(xpoints)
 
         # perform inference
-        self.logger.info(f'Estimating the pdf p(X) at n={x_predict.shape[1]} points;'
-                         f' X = {self.taglist}...')
+        self.logger.info(
+            f"Estimating the pdf p(X) at n={x_predict.shape[1]} points;"
+            f" X = {self.taglist}..."
+        )
         dftkwargs = self.kdekwargs.copy()
-        dftkwargs['doFFT'] = False
+        dftkwargs["doFFT"] = False
         # calculate the PDF in Fourier space
         self.pdfobj = fastKDE.fastKDE(data=self.data.values.T, **dftkwargs)
 
@@ -517,13 +536,16 @@ class HealthModelBP11(HealthModelGeneric):
 
 class HealthModelMLCV(HealthModelGeneric):
     """Subclass performs KDE using a Gaussian kernel with bandwidths selected via ML-CV)."""
-    defaultconfig = {'efficient': True,
-                     'randomize': True,
-                     'n_res': 32,
-                     'n_sub': 256,
-                     'n_jobs': -1,
-                     'numPoints': 256,
-                     'max_nbytes': '1M'}
+
+    defaultconfig = {
+        "efficient": True,
+        "randomize": True,
+        "n_res": 32,
+        "n_sub": 256,
+        "n_jobs": -1,
+        "numPoints": 256,
+        "max_nbytes": "1M",
+    }
     """
     Copied from `statsmodels.EstimatorSettings` (for kwargs used in the defaultconfig)
     ------------------------------------------------------------------------
@@ -557,20 +579,21 @@ class HealthModelMLCV(HealthModelGeneric):
             self.kdekwargs[key] = val
 
         # initialise instance attributes
-        self.numPoints = copy.deepcopy(self.kdekwargs['numPoints'])
+        self.numPoints = copy.deepcopy(self.kdekwargs["numPoints"])
         self.area_validation = copy.deepcopy(
-            self.kdekwargs.setdefault('area_validation', self.area_validation))
+            self.kdekwargs.setdefault("area_validation", self.area_validation)
+        )
 
         # assign inputs for stateful reset
         self.model_kwargs = model_kwargs
 
         # set the max_nbytes parameter for joblib
-        self.max_nbytes = copy.deepcopy(self.kdekwargs['max_nbytes'])
+        self.max_nbytes = copy.deepcopy(self.kdekwargs["max_nbytes"])
 
         # strip the kwargs needed only for statsmodels kde API
-        self.kdekwargs.pop('max_nbytes')
-        self.kdekwargs.pop('numPoints')
-        self.kdekwargs.pop('area_validation')
+        self.kdekwargs.pop("max_nbytes")
+        self.kdekwargs.pop("numPoints")
+        self.kdekwargs.pop("area_validation")
 
     def fit(self, df, taglist, tag_descriptions, cxt_kwargs=None):
         """Fit an nD KDE model and return result on a uniform grid.
@@ -599,8 +622,9 @@ class HealthModelMLCV(HealthModelGeneric):
 
         # select bandwidths via MLCV
         self.logger.info(
-            f'Training KDE model step 1/2: selecting kernel bandwidth via MLCV; '
-            f'X = {self.taglist}...')
+            f"Training KDE model step 1/2: selecting kernel bandwidth via MLCV; "
+            f"X = {self.taglist}..."
+        )
 
         # create estimator settings object
         est_config = EstimatorSettings(**self.kdekwargs)
@@ -611,20 +635,22 @@ class HealthModelMLCV(HealthModelGeneric):
         self.deltaX = [np.diff(x[0:2])[0] for x in self.axes]
 
         # perform bandwidth selection
-        vartype = str().join(['c'] * self.data.values.shape[1])
-        self.pdfobj = KDEMultivariate(self.data.values,
-                                      var_type=vartype,
-                                      bw='cv_ml',
-                                      defaults=est_config,
-                                      max_nbytes=self.max_nbytes)
+        vartype = str().join(["c"] * self.data.values.shape[1])
+        self.pdfobj = KDEMultivariate(
+            self.data.values,
+            var_type=vartype,
+            bw="cv_ml",
+            defaults=est_config,
+            max_nbytes=self.max_nbytes,
+        )
 
-        self.logger.info(
-            f'\tMLCV selected bandwidths: {list(self.pdfobj.bw)}')
+        self.logger.info(f"\tMLCV selected bandwidths: {list(self.pdfobj.bw)}")
 
         self.trained = True
 
         self.logger.info(
-            f'Training KDE model step 2/2: estimating pdf p(X) on uniform grid: {dims}...')
+            f"Training KDE model step 2/2: estimating pdf p(X) on uniform grid: {dims}..."
+        )
 
         # use selected bandwidth to estimate the PDF on the internal model grid
         pdf_pairs, _ = self.evaluate(self.grid_coords)
@@ -649,14 +675,16 @@ class HealthModelMLCV(HealthModelGeneric):
         """
         # if the model has not been trained
         if not self.trained:
-            raise RuntimeError('Model has not yet been trained. Provide input data.')
+            raise RuntimeError("Model has not yet been trained. Provide input data.")
 
         # clean up the input points
         x_predict = self._parsepoints(xpoints).T
 
         # perform inference
-        self.logger.info(f'Estimating the pdf p(X) at n={x_predict.shape[0]} points;'
-                         f' X = {self.taglist}...')
+        self.logger.info(
+            f"Estimating the pdf p(X) at n={x_predict.shape[0]} points;"
+            f" X = {self.taglist}..."
+        )
 
         # calculate the PDF at the requested points
         pdf_points = self.pdfobj.pdf(x_predict).tolist()

@@ -10,12 +10,14 @@ import copy
 
 import joblib
 import numpy as np
-from statsmodels.nonparametric._kernel_base import (EstimatorSettings,
-                                                    _adjust_shape,
-                                                    _compute_subset,
-                                                    _get_type_pos, has_joblib)
-from statsmodels.nonparametric.kernel_density import \
-    KDEMultivariate as _KDEMultivariate
+from statsmodels.nonparametric._kernel_base import (
+    EstimatorSettings,
+    _adjust_shape,
+    _compute_subset,
+    _get_type_pos,
+    has_joblib,
+)
+from statsmodels.nonparametric.kernel_density import KDEMultivariate as _KDEMultivariate
 
 
 class KDEMultivariate(_KDEMultivariate):
