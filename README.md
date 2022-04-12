@@ -1,4 +1,4 @@
-# Probability Density Functions (PDF) Likelihood Anomaly Detection - Interactive DEMOs
+# Probability Density Functions (PDF) Likelihood Anomaly Detection - Interactive DEMOs (2D + 3D)
 
 
 Setup + Running: 
