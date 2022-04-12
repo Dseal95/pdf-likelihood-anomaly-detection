@@ -6,6 +6,7 @@ from scipy.integrate import simps
 from utils.models import HealthModelBP11, HealthModelMLCV
 from utils.simulation import generate_mixture_data
 
+
 class Inputs:
     """Container class for synthetic data and models."""
 

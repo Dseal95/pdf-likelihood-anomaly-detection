@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import skewnorm
 
+
 def generate_3D_mixture(n_samples: int, mixture_params: List[list]):
     """Generate synthetic 3D Gaussian mixture data.
 
@@ -121,6 +122,7 @@ def generate_mixture_data(n_samples: int, mixture_params: list):
     df["GMM_z"] = left_skewed
 
     return df, tags
+
 
 def generate_grid(xdata, n_grid=256):
     """Create uniformly spaced grid from nD axis vectors.
