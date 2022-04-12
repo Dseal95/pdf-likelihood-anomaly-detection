@@ -1,12 +1,12 @@
 *****************************
 
-Interactive demo for 2D Joint-Probability Density Distributions
+Interactive demo for 3D Joint-Probability Density Distributions
 
 Introduction
 --------------------------
 
 This is an example of using joint probability disributions (estimated with KDEs) to model a process and subsequently score and classify a new observation.
-The underlying process is simulated by a 2D Gaussian mixture. The application visualises:
+The underlying process is simulated by a 3D Gaussian mixture. The application visualises:
     * the raw data
     * the 2D kernel density estimate
     * the marginalised 1D density estimates
@@ -21,7 +21,17 @@ The user may interactively adjust:
     * x and y values of the point being evaluated
     * classification threshold (alpha)
     * number of contours drawn.
-    
+
+
+Getting Ready
+--------------------------
+
+1. Create or activate an existing Python >= 3.7.4, <= 3.9.2 environment.
+2. Create a virtual environment using ``sh setup_venv.sh`` in terminal (mac OS) or Command Line (Windows)
+3. Conversely run the commands inside the ``setup_venv.sh``
+
+Note - built and tested using a Python >= 3.7.4, <= 3.9.2 base environment.
+
 
 Using the application
 --------------------------
