@@ -64,16 +64,15 @@ if __name__ == "__main__":
         "numpoints": 64,  # MLCV 2**n | BP11 required 2**n +1
         "n_samples": 1000,
         # Mixture of 2D Gaussians [mu_x, mu_y, sigma_x, sigma_y, rho]
-        # Mixture 1: Realistic 2D joint probability distribution
-        "mixture_params": [
+        "mixture_params": [  # Mixture 1: Realistic 2D joint probability distribution
             [-0.5, -4.5, 1.0, 1.0, 0.6],
             [-3.0, 0.0, 1.0, 1.0, 0.8],
             [1.0, -2.0, 1.0, 1.0, -0.8],
             [1, -4.0, 1.5, 1.5, 0.0],
         ],
-        # # Mixture 2: exaggerated joint distribution with a single high concentration of density
-        # 'mixture_params': [[1, 3, 1.0, 1.0, 0.6],
-        #                    [2, -2, 0.1, 0.1, 0.0]],
+        # 'mixture_params': [
+        #     [1, 3, 1.0, 1.0, 0.6],  # Mixture 2: exaggerated joint distribution with a single high concentration of density
+        #     [2, -2, 0.1, 0.1, 0.0]],
         "max_nbytes": "1M",
     }
 
