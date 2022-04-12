@@ -1,7 +1,6 @@
-angloamerican.analytics.processhealth.exploration.ph_dashboard_2d
 *****************************
 
-Interactive demo for 2D process health models
+Interactive demo for 2D Joint-Probability Density Distributions
 
 Introduction
 --------------------------
@@ -27,13 +26,10 @@ The user may interactively adjust:
 Getting Ready
 --------------------------
 
-1. Create or activate an existing Python 3.7.4 environment
-2. Create a virtual environment using ``tox -e develop`` (requires `tox <https://tox.readthedocs.io/en/latest/>`_ to be
-installed - can be installed using pip/conda). This will install the package using the ``develop`` option into a virtual
-environment at ``.venv`` in the repository directory, which can be activated using ``.venv/Scripts/activate``.
+1. Create or activate an existing Python >= 3.7.4, <= 3.9.2 environment.
+2. Create a virtual environment using ``sh setup_venv.sh`` in terminal (mac OS) or Command Line (Windows)
 
-Note - built and tested using a python 3.7.4 base environment.
-
+Note - built and tested using a Python >= 3.7.4, <= 3.9.2 base environment.
 
 
 Using the application
