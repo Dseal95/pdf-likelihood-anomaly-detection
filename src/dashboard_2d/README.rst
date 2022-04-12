@@ -1,6 +1,5 @@
-*****************************
-
 Interactive demo for 2D Joint-Probability Density Distributions
+--------------------------
 
 Introduction
 --------------------------
@@ -8,10 +7,11 @@ Introduction
 This is an example of using joint probability disributions (estimated with KDEs) to model a process and subsequently score and classify a new observation.
 The underlying process is simulated by a 2D Gaussian mixture. The application visualises:
     * the raw data
-    * the 2D kernel density estimate
+    * the 2D kernel density estimate (x and y)
     * the marginalised 1D density estimates
     * the health envelope (equivalent to the lowest-value density contour)
     * the health scoring function
+
 For a new observation controlled by the user, it also shows:
     * the position in 1D and 2D
     * the health score
@@ -21,7 +21,8 @@ The user may interactively adjust:
     * x and y values of the point being evaluated
     * classification threshold (alpha)
     * number of contours drawn.
-    
+
+Note - There may be a slight delay in user interaction updates due to app build / rendering.
 
 Using the application
 --------------------------

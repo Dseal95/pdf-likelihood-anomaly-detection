@@ -1,6 +1,5 @@
-*****************************
-
 Interactive demo for 3D Joint-Probability Density Distributions
+--------------------------
 
 Introduction
 --------------------------
@@ -8,12 +7,12 @@ Introduction
 This is an example of using joint probability disributions (estimated with KDEs) to model a process and subsequently score and classify a new observation.
 The underlying process is simulated by a 3D Gaussian mixture. The application visualises:
     * the raw data
-    * the 2D kernel density estimate
-    * the marginalised 1D density estimates
+    * the 3D kernel density estimate
+    * the marginalised 3D density estimates (x, y and z)
     * the health envelope (equivalent to the lowest-value density contour)
     * the health scoring function
 For a new observation controlled by the user, it also shows:
-    * the position in 1D and 2D
+    * the position in 1D and 3D
     * the health score
     * the health status classification (healthy /unhealthy)
 
@@ -22,16 +21,7 @@ The user may interactively adjust:
     * classification threshold (alpha)
     * number of contours drawn.
 
-
-Getting Ready
---------------------------
-
-1. Create or activate an existing Python >= 3.7.4, <= 3.9.2 environment.
-2. Create a virtual environment using ``sh setup_venv.sh`` in terminal (mac OS) or Command Line (Windows)
-3. Conversely run the commands inside the ``setup_venv.sh``
-
-Note - built and tested using a Python >= 3.7.4, <= 3.9.2 base environment.
-
+Note - There may be some delays in the interactiveness due to large amount of rendering needed for the 3D scatter plot. 
 
 Using the application
 --------------------------
