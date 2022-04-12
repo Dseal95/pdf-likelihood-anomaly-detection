@@ -88,6 +88,35 @@ def generate_2D_mixture(n_samples: int, mixture_params: List[list]):
     return df, tags
 
 
+def generate_mixture_data(n_samples: int, mixture_params: list):
+    """Generate synthetic Gaussian mixture data."""
+
+    def build_cov_mat(sx: float, sy: float, rho: float):
+        """Assemble a covariance matrix."""
+        c_xy = rho * np.sqrt(sx * sy)
+        return [[sx**2, c_xy], [c_xy, sy**2]]
+
+    # make repeatable
+    np.random.seed(0)
+
+    # number of mixtures
+    n = int(n_samples / len(mixture_params))
+
+    # generate samples
+    data = []
+    for dist in mixture_params:
+        mu = dist[:2]
+        gCovMat = build_cov_mat(*tuple(dist[2:]))
+        data.append(np.random.multivariate_normal(mu, gCovMat, n).T)
+    data = np.concatenate(tuple(data), axis=1)
+
+    # outputs
+    tags = ["GMM_x", "GMM_y"]
+    df = pd.DataFrame(data.T, columns=tags)
+
+    return df, tags
+
+
 def generate_grid(xdata, n_grid=256):
     """Create uniformly spaced grid from nD axis vectors.
 

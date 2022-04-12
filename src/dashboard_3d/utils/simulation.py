@@ -4,7 +4,7 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-
+from scipy.stats import skewnorm
 
 def generate_3D_mixture(n_samples: int, mixture_params: List[list]):
     """Generate synthetic 3D Gaussian mixture data.
@@ -87,6 +87,40 @@ def generate_2D_mixture(n_samples: int, mixture_params: List[list]):
 
     return df, tags
 
+
+def generate_mixture_data(n_samples: int, mixture_params: list):
+    """Generate synthetic 3D Gaussian mixture data."""
+
+    def build_cov_mat(sx, sy, sz, r):
+        return [
+            [sx**2, r * sx * sy * sz, r * sx * sy * sz],
+            [r * sx * sy * sz, sy**2, r * sx * sy * sz],
+            [r * sx * sy, r * sx * sy * sz, sz**2],
+        ]
+
+    # make repeatable
+    np.random.seed(0)
+
+    # number of mixtures
+    n = int(n_samples / len(mixture_params))
+
+    # generate samples
+    data = []
+    for dist in mixture_params:
+        mu = dist[:3]
+        gCovMat = build_cov_mat(*tuple(dist[3:]))
+        data.append(np.random.multivariate_normal(mu, gCovMat, n).T)
+    data = np.concatenate(tuple(data), axis=1)
+
+    # outputs
+    tags = ["GMM_x", "GMM_y", "GMM_z"]
+    df = pd.DataFrame(data.T, columns=tags)
+
+    # adding in a left skewed normal distribution
+    left_skewed = skewnorm.rvs(a=4, size=n_samples)
+    df["GMM_z"] = left_skewed
+
+    return df, tags
 
 def generate_grid(xdata, n_grid=256):
     """Create uniformly spaced grid from nD axis vectors.

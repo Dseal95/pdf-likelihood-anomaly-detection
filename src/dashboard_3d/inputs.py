@@ -1,45 +1,10 @@
 """Manage data and model inputs for the application."""
 import numpy as np
-import pandas as pd
+
 from scipy.integrate import simps
-from scipy.stats import skewnorm
+
 from utils.models import HealthModelBP11, HealthModelMLCV
-
-
-def generate_mixture_data(n_samples: int, mixture_params: list):
-    """Generate synthetic 3D Gaussian mixture data."""
-
-    def build_cov_mat(sx, sy, sz, r):
-        return [
-            [sx**2, r * sx * sy * sz, r * sx * sy * sz],
-            [r * sx * sy * sz, sy**2, r * sx * sy * sz],
-            [r * sx * sy, r * sx * sy * sz, sz**2],
-        ]
-
-    # make repeatable
-    np.random.seed(0)
-
-    # number of mixtures
-    n = int(n_samples / len(mixture_params))
-
-    # generate samples
-    data = []
-    for dist in mixture_params:
-        mu = dist[:3]
-        gCovMat = build_cov_mat(*tuple(dist[3:]))
-        data.append(np.random.multivariate_normal(mu, gCovMat, n).T)
-    data = np.concatenate(tuple(data), axis=1)
-
-    # outputs
-    tags = ["GMM_x", "GMM_y", "GMM_z"]
-    df = pd.DataFrame(data.T, columns=tags)
-
-    # adding in a left skewed normal distribution
-    left_skewed = skewnorm.rvs(a=4, size=n_samples)
-    df["GMM_z"] = left_skewed
-
-    return df, tags
-
+from utils.simulation import generate_mixture_data
 
 class Inputs:
     """Container class for synthetic data and models."""
