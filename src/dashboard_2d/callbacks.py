@@ -1,4 +1,5 @@
 """Manage callback functions."""
+
 import dash
 import numpy as np
 from dash.dependencies import Input, Output
@@ -72,6 +73,7 @@ def _get_marginal_traces(x, axes, pdf, hist, bins, orientation=None):
 
 def register_callbacks(app, layouts):
     """Registers the callback functions that enable user interaction."""
+
     # Figure callbacks - these update plots during user interaction
     # Widget sync
     @app.callback(

@@ -1,4 +1,5 @@
 """2D Health Modelling Dash App."""
+
 import dash_bootstrap_components as dbc
 from dash import dash
 
@@ -61,7 +62,7 @@ def build_app(config):
 if __name__ == "__main__":
     config = {
         "model_type": "MLCV",
-        "numpoints": 64,  # MLCV 2**n | BP11 required 2**n +1
+        "num_points": 64,  # MLCV 2**n | BP11 required 2**n +1
         "n_samples": 1000,
         # Mixture of 2D Gaussians [mu_x, mu_y, sigma_x, sigma_y, rho]
         "mixture_params": [  # Mixture 1: Realistic 2D joint probability distribution
@@ -80,4 +81,4 @@ if __name__ == "__main__":
     app = build_app(config)
 
     # run
-    app.run_server(debug=False)
+    app.run(debug=False)

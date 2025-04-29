@@ -1,12 +1,29 @@
 # Probability Density Functions (PDF) Likelihood Anomaly Detection - Interactive DEMOs (2D + 3D)
 
+**2D App**
+<div style="text-align: center;">
+  <img src="images/2D_app.png" alt="2D App Snapshot" width="750" height="400"/>
+</div>
 
-Setup + Running: 
+**3D App**
+<div style="text-align: center;">
+  <img src="images/3D_app.png" alt="3D App Snapshot" width="750" height="400"/>
+</div>
+
+Setup: 
 --------------------------
 1. Create or activate an existing Python >= 3.7.4, <= 3.9.2 environment.
-2. Create a virtual environment using ``sh setup_venv.sh`` in terminal (mac OS) or Command Line (Windows)
+2. Create a virtual environment using conda with ``sh setup_venv.sh`` in terminal (mac OS) or Command Line (Windows)
 
  **Note** - built and tested using a Python >= 3.7.4, <= 3.9.2 base environment.
+
+
+Running: 
+--------------------------
+
+
+
+
 
 Repository
 --------------------------

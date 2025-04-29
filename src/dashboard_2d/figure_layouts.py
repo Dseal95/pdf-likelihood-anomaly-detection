@@ -13,7 +13,6 @@ layout_2d = dict(
         showgrid=True,
         gridcolor="lightgrey",
         title="Tag X",
-        titlefont=dict(color="black"),
         showline=True,
         linecolor="black",
         linewidth=2,
@@ -23,7 +22,6 @@ layout_2d = dict(
         showgrid=True,
         gridcolor="lightgrey",
         title="Tag Y",
-        titlefont=dict(color="black"),
         showline=True,
         linecolor="black",
         linewidth=2,
@@ -35,8 +33,8 @@ layout_2d = dict(
         y=0.94,
         yanchor="top",
         xanchor="center",
-        font=dict(family="Verdana", size=16, color="black"),
     ),
+    title_font=dict(family="Verdana", size=16, color="black"),
 )
 
 layout_x = dict(
@@ -58,7 +56,6 @@ layout_x = dict(
         showgrid=True,
         gridcolor="lightgrey",
         title="P(x)",
-        titlefont=dict(color="black"),
         showline=True,
         linecolor="black",
         linewidth=2,
@@ -81,7 +78,6 @@ layout_y = dict(
         showgrid=True,
         gridcolor="lightgrey",
         title="P(x)",
-        titlefont=dict(color="black"),
         zeroline=True,
         zerolinewidth=2,
         zerolinecolor="black",
@@ -112,7 +108,6 @@ layout_scoring = dict(
     xaxis_range=[0, 1],
     xaxis=dict(
         title="P(x,y)",
-        titlefont=dict(color="black"),
         gridcolor="lightgrey",
         showgrid=True,
         showline=True,
@@ -123,7 +118,6 @@ layout_scoring = dict(
     yaxis=dict(
         side="right",
         title="Pr[L\u2093 \u2264 P(x,y)]",
-        titlefont=dict(color="black"),
         gridcolor="lightgrey",
         showgrid=True,
         showline=True,
@@ -139,6 +133,7 @@ layout_scoring = dict(
         x=0.5,
         y=0.96,
         yanchor="top",
-        font=dict(family="Verdana", size=16, color="black"),
+        xanchor="center",
     ),
+    title_font=dict(family="Verdana", size=16, color="black"),
 )

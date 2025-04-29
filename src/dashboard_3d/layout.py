@@ -1,4 +1,5 @@
 """Manage the application html layout."""
+
 import dash_bootstrap_components as dbc
 import numpy as np
 import pandas as pd

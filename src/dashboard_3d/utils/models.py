@@ -3,7 +3,6 @@
 TODO - add some configurable error handling for failed MLCV fits (when pdfobj and bw are nan)
 """
 
-
 import copy
 import logging
 import os
@@ -33,7 +32,7 @@ class HealthModelGeneric:
 
     Instance Attributes:
         pdf_masked (maskedarray):
-            The fitted nD capability envelope [numPoints x numPoints...]
+            The fitted nD capability envelope [num_points x num_points...]
 
         axes (list of arrays):
             Uniformly spaced grid points of the capability envelope, one array per axis
@@ -83,7 +82,7 @@ class HealthModelGeneric:
         self.axes = None
         self.kdekwargs = None
         self.model_kwargs = None
-        self.numPoints = None
+        self.num_points = None
         self.area_validation = True
         self.tag_descriptions = {}
         self.grid_coords = None
@@ -363,13 +362,13 @@ class HealthModelGeneric:
             raise (TypeError, msg)
 
         # convert to an array
-        x_predict = np.array(df_x.values, copy=True, dtype=np.float).T
+        x_predict = np.array(df_x.values, copy=True, dtype=np.float64).T
 
         # check the rank of the input data points
         # if the data are an array, promote the data to a rank-1 array with only 1 column
         dataRank = len(np.shape(x_predict))
         if dataRank == 1:
-            x_predict = np.array(x_predict[np.newaxis, :], dtype=np.float)
+            x_predict = np.array(x_predict[np.newaxis, :], dtype=np.float64)
         if dataRank > 2:
             raise ValueError(
                 "cannot broadcast x_predict to a rank-2 array "
@@ -413,12 +412,12 @@ class HealthModelBP11(HealthModelGeneric):
     # TODO: add method for computing marginals
 
     defaultconfig = {
-        "doApproximateECF": True,
-        "ecfPrecision": 1,
-        "numPointsPerSigma": 50,
-        "numPoints": 1025,
-        "doSaveMarginals": False,
-        "positiveShift": True,
+        "do_approximate_ecf": True,
+        "ecf_precision": 1,
+        "num_points_per_sigma": 50,
+        "num_points": 1025,
+        "do_save_marginals": False,
+        "positive_shift": True,
     }
 
     def __init__(self, **model_kwargs):
@@ -432,7 +431,7 @@ class HealthModelBP11(HealthModelGeneric):
             self.kdekwargs[key] = val
 
         # initialise instance attributes
-        self.numPoints = copy.deepcopy(self.kdekwargs["numPoints"])
+        self._points = copy.deepcopy(self.kdekwargs["num_points"])
         self.area_validation = copy.deepcopy(
             self.kdekwargs.setdefault("area_validation", self.area_validation)
         )
@@ -514,7 +513,7 @@ class HealthModelBP11(HealthModelGeneric):
             f" X = {self.taglist}..."
         )
         dftkwargs = self.kdekwargs.copy()
-        dftkwargs["doFFT"] = False
+        dftkwargs["do_fft"] = False
         # calculate the PDF in Fourier space
         self.pdfobj = fastKDE.fastKDE(data=self.data.values.T, **dftkwargs)
 
@@ -543,7 +542,7 @@ class HealthModelMLCV(HealthModelGeneric):
         "n_res": 32,
         "n_sub": 256,
         "n_jobs": -1,
-        "numPoints": 256,
+        "num_points": 256,
         "max_nbytes": "1M",
     }
     """
@@ -579,7 +578,7 @@ class HealthModelMLCV(HealthModelGeneric):
             self.kdekwargs[key] = val
 
         # initialise instance attributes
-        self.numPoints = copy.deepcopy(self.kdekwargs["numPoints"])
+        self.num_points = copy.deepcopy(self.kdekwargs["num_points"])
         self.area_validation = copy.deepcopy(
             self.kdekwargs.setdefault("area_validation", self.area_validation)
         )
@@ -592,7 +591,7 @@ class HealthModelMLCV(HealthModelGeneric):
 
         # strip the kwargs needed only for statsmodels kde API
         self.kdekwargs.pop("max_nbytes")
-        self.kdekwargs.pop("numPoints")
+        self.kdekwargs.pop("num_points")
         self.kdekwargs.pop("area_validation")
 
     def fit(self, df, taglist, tag_descriptions, cxt_kwargs=None):
@@ -630,7 +629,7 @@ class HealthModelMLCV(HealthModelGeneric):
         est_config = EstimatorSettings(**self.kdekwargs)
 
         # generate the grid
-        griditems = generate_grid(self.data.values, self.numPoints)
+        griditems = generate_grid(self.data.values, self.num_points)
         self.grid_coords, _, dims, self.axes = griditems
         self.deltaX = [np.diff(x[0:2])[0] for x in self.axes]
 

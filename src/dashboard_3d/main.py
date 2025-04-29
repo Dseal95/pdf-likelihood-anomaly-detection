@@ -1,4 +1,5 @@
 """3D Health Modelling Dash App."""
+
 import dash_bootstrap_components as dbc
 from dash import dash
 
@@ -38,7 +39,7 @@ if __name__ == "__main__":
 
     config = {
         "model_type": "BP11",
-        "numpoints": 65,  # 2^n + 1: 33, 65
+        "num_points": 65,  # 2^n + 1: 33, 65
         "n_samples": 1000,
         # Mixture of 3D Gaussians [mu_x, mu_y, mu_z, sigma_x, sigma_y, sigma_z, rho]
         "mixture_params": [
@@ -51,4 +52,4 @@ if __name__ == "__main__":
     app = build_app(config)
 
     # run
-    app.run_server(debug=False)
+    app.run(debug=False)
