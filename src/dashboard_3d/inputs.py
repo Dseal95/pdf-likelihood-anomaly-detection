@@ -1,4 +1,5 @@
 """Manage data and model inputs for the application."""
+
 import numpy as np
 
 from scipy.integrate import simps
@@ -16,7 +17,7 @@ class Inputs:
         self.n_samples = config["n_samples"]
         self.mixture_params = config["mixture_params"]
         self.model_type = config["model_type"]
-        self.numpoints = config["numpoints"]
+        self.numpoints = config["num_points"]
 
         # data
         self.df = None
@@ -41,7 +42,7 @@ class Inputs:
         """fit statistical models."""
 
         # fit health model
-        kwargs = dict(area_validation=False, numPoints=self.numpoints)
+        kwargs = dict(area_validation=False, num_points=self.numpoints)
         if self.model_type == "MLCV":
             self.kde = HealthModelMLCV(**kwargs)
         elif self.model_type == "BP11":

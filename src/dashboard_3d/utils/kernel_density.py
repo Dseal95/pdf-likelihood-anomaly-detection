@@ -6,6 +6,7 @@ This was to fix an issue when n_jobs=-1 to run in parallel mode, where fitting w
 
 [0] https://github.com/statsmodels/statsmodels/pull/6058/commits/ce02f8e8ade546fb0e8a1b155add8aae7362242f
 """
+
 import copy
 
 import joblib
